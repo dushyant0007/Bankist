@@ -202,7 +202,7 @@ const startLogOutTimer = function () {
   let time = (60 * 5); // 5min
 
   // call the timer every second
-  const timer = setInterval(() => {
+    let timer = setInterval(() => {
     time--;
     let min = String(Math.trunc(time / 60)).padStart(2, '0');
     let secs = String(time % 60).padStart(2, '0');
@@ -217,16 +217,13 @@ const startLogOutTimer = function () {
 
   }, 1000)
 
-        
+  return timer;
 
-  //In each call , print the recaning time
-
-  //When timer out  - stop timer and log out user
 }
 
 //-----------------------------------------------------------
 
-let currentAccount;
+let currentAccount,timer;
 
 // Event Handlers
 btnLogin.addEventListener('click', function (event) {
@@ -250,7 +247,12 @@ btnLogin.addEventListener('click', function (event) {
 
     labelDate.textContent = day + '/' + month + '/' + year + ' ' + hour + ':' + minutes;
 
-    startLogOutTimer();
+    // if already there is a timer // clare it
+    if(timer){
+      clearInterval(timer)
+    }
+
+    timer = startLogOutTimer();
 
   }
   else
