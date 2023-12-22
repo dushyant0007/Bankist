@@ -140,10 +140,12 @@ const displayMovements = function (acc, sort = false) {
     const month = `${(date.getMonth() + 1)}`.padStart(2, 0);
     const year = `${date.getFullYear()}`.padStart(2, 0);
     const displayDate = day + '/' + month + '/' + year;
-    const diff = Math.round((Number(Date.now()) - Number(date.getTime()))/(1000 * 60 * 60 * 24));
-    const displayDt = diff > 5 ? displayDate : diff+' days ago';
+    const diff = Math.round((Number(Date.now()) - Number(date.getTime())) / (1000 * 60 * 60 * 24));
+    const displayDt = diff > 5 ? displayDate : diff + ' days ago';
     console.log(displayDt)
-    
+
+
+
     const html = `<div class="movements__row">
         <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
         <div class="movements__date">${displayDt}</div>
@@ -192,6 +194,36 @@ function updateUI(currentAccount) {
   displayBalance(currentAccount);
 }
 
+//--Logout Timer
+
+const startLogOutTimer = function () {
+  //set timer to 5 minutes
+
+  let time = (60 * 5); // 5min
+
+  // call the timer every second
+  const timer = setInterval(() => {
+    time--;
+    let min = String(Math.trunc(time / 60)).padStart(2, '0');
+    let secs = String(time % 60).padStart(2, '0');
+    labelTimer.textContent = min + ':' + secs;
+
+    if (time == 0){
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+      currentAccount = '';
+    }
+
+  }, 1000)
+
+        
+
+  //In each call , print the recaning time
+
+  //When timer out  - stop timer and log out user
+}
+
 //-----------------------------------------------------------
 
 let currentAccount;
@@ -218,6 +250,7 @@ btnLogin.addEventListener('click', function (event) {
 
     labelDate.textContent = day + '/' + month + '/' + year + ' ' + hour + ':' + minutes;
 
+    startLogOutTimer();
 
   }
   else
